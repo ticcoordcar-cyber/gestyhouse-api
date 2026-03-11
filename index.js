@@ -7,7 +7,22 @@ import { createClient } from '@supabase/supabase-js'
 const app = express()
 const PORT = process.env.PORT || 3001
 
-app.use(cors({ origin: ['http://localhost:5174', 'http://localhost:5173', 'http://localhost:3000'] }))
+const allowedOrigins = [
+  'http://localhost:5174',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  /\.vercel\.app$/,
+  /\.railway\.app$/
+]
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true) // allow server-to-server
+    const allowed = allowedOrigins.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    )
+    callback(null, allowed)
+  }
+}))
 app.use(express.json())
 app.use('/fotos', express.static('public/fotos/Nuevas'))
 
