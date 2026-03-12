@@ -12,7 +12,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   /\.vercel\.app$/,
-  /\.railway\.app$/
+  /\.railway\.app$/,
+  /\.hostingersite\.com$/
 ]
 app.use(cors({
   origin: (origin, callback) => {
